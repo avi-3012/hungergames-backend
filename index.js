@@ -141,6 +141,7 @@ io.on("connection", (socket) => {
   });
   socket.on("describe", ({ name, describe }) => {
     io.to(room).emit("describe", { name, describe });
+    var currentPlayer = playerOrder[currentTurn];
     currentTurn += 1;
     console.log(currentTurn, playerOrder.length);
     if (currentTurn == playerOrder.length) {
@@ -152,6 +153,11 @@ io.on("connection", (socket) => {
         currentTurn += 1;
         if (currentTurn == playerOrder.length) {
           currentTurn = 0;
+        }
+        if (currentPlayer == playerOrder[currentTurn]) {
+          i = false;
+          io.to(room).emit("win", playerOrder[currentTurn]);
+          return;
         }
       } else {
         i = false;
