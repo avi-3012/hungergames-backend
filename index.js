@@ -4,10 +4,10 @@ const app = express();
 const port = process.env.PORT || 8080;
 const room = "1111";
 var users = 0;
-const players = {
+var players = {
   // socket.id: {Name: "name", Color: "color", Ready: true/false}
 };
-const ready = {};
+var ready = {};
 var readyCount = 0;
 var sessionStatus = false;
 var playerOrder = [];
@@ -204,5 +204,16 @@ server.listen({ host: "0.0.0.0", port: 8080 }, () => {
 });
 
 app.get("/", (req, res) => {
+  io.socketsLeave(room);
+  users = 0;
+  players = {
+    // socket.id: {Name: "name", Color: "color", Ready: true/false}
+  };
+  ready = {};
+  readyCount = 0;
+  sessionStatus = false;
+  playerOrder = [];
+  playerMeta = {};
+  currentTurn = 0;
   res.send("Hello World!");
 });
